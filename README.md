@@ -1,1 +1,19 @@
 # VGDCC
+Video Game Directory and Configuration Correction Project
+## About
+The VGDCC is a project aiming to change the locations of data and configuration files for various video games to match the Windows Application Developer Guidelines. The majority of games developed today do not follow these guidelines, instead installing and saving their files to locations dedicated to other uses. The project aims to do this by creating an application to automate the scanning for applications, relocation of files, and where necessary, alteration of configuration files to point to the new file location or create Hardlinks and Symbolic Links to direct the game to the new location of the files.
+## Specifications
+Development of the project will take place initially on and for Windows 10 systems. Extension to other WindowsNT systems, Mac and Linux systems may be pursued in the future. 
+A game's files can be divided into several types that determine their location on a Hard Drive. These tyoes are; Executables and code libraries, static Content and Resources, cache and temporary files, user-agnostic configuration settings, user-specific data and content, user-specific configuration settings, and saved games.
+### Executables and Libraries
+These are the core of any application. For the majority of applications on windows, by default these should be installed to the path "C:\Program Files\$CompanyName\$AppName\", or to "C:\Program Files (x86)\%CompanyName%\%AppName%\" for a 32-bit application on a 64-bit machine. Often a game will forego the step of storing the app directory in their Company directory, or if the game is installed through a launcher, the app directory will be within a folder designated by the launcher. For Steam, this would be C:\Program Files x86)\Steam\steamapps\.
+### Content and Resources
+These are static data files that the application draws from, which are not embedded in the executable. By default these should be stored in C:\ProgramData\%CompanyName%\%AppName%\ however many applications instead store these in the app directory alongside the Executables and libraries.
+### Cache and Temporary Resources
+Any files that can be safely deleted without data loss when not in use, such as caches created by the application and downloads-in-progress for updates, should be stored in a Temporary folder, designated by the %TEMP% environment variable, which can be either C:\Windows\Temp\ or %USERPROFILE%\AppData\Local\Temp\.
+Due to the nature of how these are often handled, they may be outside the scope of this project.
+### Configuration settings
+On Windows, any configuration settings should be stored within the Windows Registry at the path HKLM:\SOFTWARE\$CompanyName\$AppName\ for System wide settings, and HKCU:\SOFTWARE\$CompanyName\$AppName\ for user specific settings. However the majority of video games underutilize or do not use the registry. Instead they may use a plaintext .ini or .cfg file or similar. If these are used, they should be stored in the \ProgramData\ folder for system-wide settings, or for user specific settings they should be in the User's AppData folder, %USERPROFILE%\AppData\Local\$CompanyName\$AppName\. If the settings are to be used accross multiple machines, they should be in %USERPROFILE%\AppData\Roaming\$CompanyName\$AppName\.
+A common practice among video games is to store these configuration files in a user's My Documents folder. This is contrary to the Documents folder's intended purpose and causes considerable clutter. Resolving this specific issue is one of the main objectives of this project.
+### Saved Games
+Windows has a specific folder intended for video game saves, "%USERPROFILE%\Saved Games". This folder was introduced in Windows Vista, however in this day very few games will use it. Instead, they store the saves within either the user's AppData folder as done in Legacy systems, or in the worst examples, in the user's My Documents folder.
